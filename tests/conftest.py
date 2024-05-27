@@ -1,14 +1,10 @@
-import asyncio
-
 import pytest
-import pytest_asyncio
 
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy import text, table, column
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, async_sessionmaker
 
-from src.core.database.config import get_session, get_session_maker, get_engine
 from src.core.settings import get_settings
 from src.server.app import get_app
 from tests.utils import generate_data
@@ -55,16 +51,16 @@ async def prepare_db(get_db_session):
     )
     await get_db_session.commit()
     yield
-    # await get_db_session.execute(
-    #     text("DROP TABLE data_first")
-    # )
-    # await get_db_session.execute(
-    #     text("DROP TABLE data_second")
-    # )
-    # await get_db_session.execute(
-    #     text("DROP TABLE data_third")
-    # )
-    # await get_db_session.commit()
+    await get_db_session.execute(
+        text("DROP TABLE data_first")
+    )
+    await get_db_session.execute(
+        text("DROP TABLE data_second")
+    )
+    await get_db_session.execute(
+        text("DROP TABLE data_third")
+    )
+    await get_db_session.commit()
 
 
 @pytest.fixture(scope="session")
